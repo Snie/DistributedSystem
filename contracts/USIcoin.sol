@@ -62,10 +62,10 @@ contract USIcoin is owned {
         Transfer(0, owner, mintedAmount);
         Transfer(owner, target, mintedAmount);
     }
-
+    
     function approveAccount(address target, bool status) onlyOwner{
     	approvedAccounts[target] = status;
     	Approved(target, status);
     }
-
+    /* TODO: Add AUTOMATIC SELLING AND BUYING*/
 }
