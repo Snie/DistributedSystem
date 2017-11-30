@@ -35,6 +35,8 @@ contract USIcoin is owned {
 	/* Initializes contract with initial supply tokens to the creator of the contract */
     function USIcoin(uint256 initialSupply, string tokenName, string tokenSymbol, uint8 decimalUnits, address centralMinter) {
     	if(centralMinter != 0 ) owner = centralMinter;
+        approvedAccounts[centralMinter] = true;
+        Approved(centralMinter, true);
     	totalSupply = initialSupply;
         balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokens
         name = tokenName;                                   // Set the name for display purposes
@@ -67,5 +69,9 @@ contract USIcoin is owned {
     	approvedAccounts[target] = status;
     	Approved(target, status);
     }
-    /* TODO: Add AUTOMATIC SELLING AND BUYING*/
+    /* TODO: find a way to make owner approved*/
+
+
+
+
 }
