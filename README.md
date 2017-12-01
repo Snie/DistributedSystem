@@ -18,6 +18,6 @@ and in /truffle.js
 
 2. run >truffle migrate (eventually truffle migrate --reset)
 
-3. npm run start
+3. npm run start (eventually npm install)
 
 4. in metamask logout and import contacts from the mnemonic generated in step 0 and set the blockchain to be localhost:9545
