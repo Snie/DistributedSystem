@@ -16,7 +16,9 @@
     "css-loader": "0.26.0",
     "detect-port": "1.0.1",
     "dotenv": "2.0.0",
+    "react-pure": "0.3.1",
     "eslint": "3.8.1",
+    "react-router-dom": "4.2.2",
     "eslint-config-react-app": "^0.5.0",
     "eslint-loader": "1.6.0",
     "eslint-plugin-flowtype": "2.21.0",
@@ -51,7 +53,8 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "truffle": "^4.0.1"
   },
   "scripts": {
     "start": "node scripts/start.js",
