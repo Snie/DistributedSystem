@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Welcome from './components/Welcome'
 import Admin from './components/Admin'
+import getWeb3 from './utils/getWeb3'
+import UsiCoinContract from '../build/contracts/USIcoin.json'
 import {
   BrowserRouter as Router,
   Route,
@@ -34,6 +36,39 @@ const Transactions = () => (
 
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      usiContract: null,
+      user: null,
+      web3: null
+    }
+  }
+
+  componentWillMount() {
+    // Get network provider and web3 instance.
+    // See utils/getWeb3 for more info.
+
+    getWeb3
+      .then(results => {
+        this.setState({
+          web3: results.web3
+        })
+        const contract = require('truffle-contract')
+        const usiCoin = contract(UsiCoinContract)
+        usiCoin.setProvider(this.state.web3.currentProvider)
+        
+        this.state.web3.eth.getAccounts((error, accounts) => {
+          usiCoin.deployed().then((instance) => {
+            this.setState({ usiContract: instance })            
+            this.setState({ user: accounts[0] })
+          })
+        })
+      }).catch(() => {
+        console.log('Error finding web3.')
+      })
+  }
 
   render() {
     return (
@@ -51,13 +86,24 @@ class App extends Component {
             </div>
             <main className="container">
               <div className="pure-g">
+              {(this.state.usiContract!=null && this.state.user !=null)?(
                 <div className="pure-u-1-1">
-                  <Route exact path="/" component={Welcome} />
-                  <Route path="/send" component={Send} />
-                  <Route path="/profile" component={Profile} />
-                  <Route path="/transaction" component={Transactions} />
-                  <Route path="/admin" component={Admin} />
+                  <Route exact path="/"  render={(routeProps) => (
+                    <Welcome {...routeProps} {...this.state} />
+                  )} />
+                  <Route path="/send" render={(routeProps) => (
+                    <Send {...routeProps} {...this.state} />
+                  )} />
+                  <Route path="/profile" render={(routeProps) => (
+                    <Profile {...routeProps} {...this.state} />
+                  )} />
+                  <Route path="/transaction" render={(routeProps) => (
+                    <Transactions {...routeProps} {...this.state} />)} />
+                  <Route path="/admin" render={(routeProps) => (
+                    <Admin {...routeProps} {...this.state} />
+                  )} />
                 </div>
+              ):"m"}
               </div>
             </main>
           </div>
