@@ -28,6 +28,9 @@ class Welcome extends Component {
     render() {
         return (
             <div>
+                <div>
+                    <img src={require("../imgs/wallet.png")} alt="wallet"/>
+                </div>
                 <h1>Welcome to your USI Wallet!</h1>
                 <p>{this.props.user}</p>
                 <h2>Your balance is: </h2>
