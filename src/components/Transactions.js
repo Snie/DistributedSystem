@@ -30,7 +30,7 @@ class Transactions extends Component {
                         <td>{e.event}</td>
                         <td>{e.args.from?e.args.from:"-"}</td>
                         <td>{e.args.to?e.args.to:"-"}</td>
-                        <td>{(e.args.value.c)?e.args.value.c:"-"}</td>
+                        <td>{(e.args.value)?e.args.value.c:"-"}</td>
                         </tr>
                     ]
                 )
