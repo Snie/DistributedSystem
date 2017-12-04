@@ -22,6 +22,7 @@ class Transactions extends Component {
             let count = 0
             let tr = logs.map((e) => {
                 count++
+                console.log(e)
                 return (
                     [
                         <tr>
@@ -29,7 +30,7 @@ class Transactions extends Component {
                         <td>{e.event}</td>
                         <td>{e.args.from?e.args.from:"-"}</td>
                         <td>{e.args.to?e.args.to:"-"}</td>
-                        <td>{(e.value)?e.value:"-"}</td>
+                        <td>{(e.args.value.c)?e.args.value.c:"-"}</td>
                         </tr>
                     ]
                 )
