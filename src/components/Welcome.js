@@ -29,7 +29,7 @@ class Welcome extends Component {
         return (
             <div>
                 <div>
-                    <img src={require("../imgs/wallet.png")} alt="wallet"/>
+                    <img src={require("../imgs/wallet.png")} alt="wallet" className="pure-img"/>
                 </div>
                 <h1>Welcome to your USI Wallet!</h1>
                 <p>{this.props.user}</p>

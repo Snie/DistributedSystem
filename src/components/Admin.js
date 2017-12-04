@@ -35,7 +35,7 @@ class Admin extends Component {
                 <h1>You are now in the management area of USICoin!</h1>
                 <p>Only the owner of USICoin can access this section</p>
                 <h2>Authorize account:</h2>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
                     <label>
                         Account:
                         <input type="text" onChange={this.handleChange} />

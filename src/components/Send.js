@@ -40,7 +40,7 @@ class Send extends Component {
                     </h1>
 
                 <h2>Send money to:</h2>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
                     <label>
                         Account:
                         <input type="text" name="to" onChange={this.handleChange} />
