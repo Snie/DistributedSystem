@@ -17,18 +17,20 @@ class Transactions extends Component {
 
     getTransactions() {
         let events = this.props.usiContract.allEvents({ fromBlock: 0, toBlock: 'latest' });
-        const eventList = events.get((error, logs) => {
+        events.get((error, logs) => {
 
             let count = 0
             let tr = logs.map((e) => {
                 count++
                 return (
-                        [
-                       count,         
-                        e.event,
-                        e.args.from,
-                        e.args.to,
-                        e.value
+                    [
+                        <tr>
+                        <td>{count}</td>
+                        <td>{e.event}</td>
+                        <td>{e.args.from?e.args.from:"-"}</td>
+                        <td>{e.args.to?e.args.to:"-"}</td>
+                        <td>{(e.value)?e.value:"-"}</td>
+                        </tr>
                     ]
                 )
 
@@ -42,13 +44,21 @@ class Transactions extends Component {
         return (
             <div>
                 <h1>All your transactions are here</h1>
-                {this.state.transactions.map((t)=>{
-                    return(
-                            <li key={t[0].toString()}> {t.map(t2 => {
-                                   return (<div>{t2}</div>)
-                            })} </li>
-                    )
-                })}
+                <table className="pure-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Event</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.transactions}
+                    </tbody>
+                </table>
+
             </div>
         )
     }
