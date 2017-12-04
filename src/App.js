@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import Welcome from './components/Welcome'
 import Admin from './components/Admin'
+import Send from './components/Send'
+import Transactions from './components/Transactions'
+
 import getWeb3 from './utils/getWeb3'
 import UsiCoinContract from '../build/contracts/USIcoin.json'
 import {
@@ -16,24 +19,11 @@ import './App.css'
 
 
 //only for prototyping
-const Send = () => (
-  <div>
-    <h2>TO DO Send</h2>
-  </div>
-)
-
 const Profile = () => (
   <div>
     <h2>TO DO Profile</h2>
   </div>
 )
-
-const Transactions = () => (
-  <div>
-    <h2>TO DO Transactions</h2>
-  </div>
-)
-
 
 class App extends Component {
   constructor(props) {
@@ -103,7 +93,7 @@ class App extends Component {
                     <Admin {...routeProps} {...this.state} />
                   )} />
                 </div>
-              ):"m"}
+              ):"Loading..."}
               </div>
             </main>
           </div>
