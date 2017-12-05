@@ -48,11 +48,15 @@ class App extends Component {
         const contract = require('truffle-contract')
         const usiCoin = contract(UsiCoinContract)
         usiCoin.setProvider(this.state.web3.currentProvider)
-        
+
         this.state.web3.eth.getAccounts((error, accounts) => {
           usiCoin.deployed().then((instance) => {
-            this.setState({ usiContract: instance })            
+            this.setState({ usiContract: instance })
             this.setState({ user: accounts[0] })
+
+            instance.owner.call().then((result) => {
+              this.setState({ admin: result })
+            })
           })
         })
       }).catch(() => {
@@ -61,6 +65,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.admin, this.state.user)
     return (
       <div className="App">
         <Router>
@@ -71,29 +76,30 @@ class App extends Component {
                 <li className="pure-menu-item"><Link to="/send" className="pure-menu-link"> Send</Link></li>
                 <li className="pure-menu-item"><Link to="/profile" className="pure-menu-link">Profile</Link></li>
                 <li className="pure-menu-item"><Link to="/transaction" className="pure-menu-link"> Transactions</Link></li>
-                <li className="pure-menu-item"><Link to="/admin" className="pure-menu-link">  Admin</Link></li>
+                {(this.state.admin === this.state.user)?(
+                <li className="pure-menu-item"><Link to="/admin" className="pure-menu-link pure-button-primary">  Admin</Link></li>):""}
               </ul>
             </div>
             <main className="container">
               <div className="pure-g">
-              {(this.state.usiContract!=null && this.state.user !=null)?(
-                <div className="pure-u-1-1">
-                  <Route exact path="/"  render={(routeProps) => (
-                    <Welcome {...routeProps} {...this.state} />
-                  )} />
-                  <Route path="/send" render={(routeProps) => (
-                    <Send {...routeProps} {...this.state} />
-                  )} />
-                  <Route path="/profile" render={(routeProps) => (
-                    <Profile {...routeProps} {...this.state} />
-                  )} />
-                  <Route path="/transaction" render={(routeProps) => (
-                    <Transactions {...routeProps} {...this.state} />)} />
-                  <Route path="/admin" render={(routeProps) => (
-                    <Admin {...routeProps} {...this.state} />
-                  )} />
-                </div>
-              ):"Loading..."}
+                {(this.state.usiContract != null && this.state.user != null) ? (
+                  <div className="pure-u-1-1">
+                    <Route exact path="/" render={(routeProps) => (
+                      <Welcome {...routeProps} {...this.state} />
+                    )} />
+                    <Route path="/send" render={(routeProps) => (
+                      <Send {...routeProps} {...this.state} />
+                    )} />
+                    <Route path="/profile" render={(routeProps) => (
+                      <Profile {...routeProps} {...this.state} />
+                    )} />
+                    <Route path="/transaction" render={(routeProps) => (
+                      <Transactions {...routeProps} {...this.state} />)} />
+                    <Route path="/admin" render={(routeProps) => (
+                      <Admin {...routeProps} {...this.state} />
+                    )} />
+                  </div>
+                ) : "Loading..."}
               </div>
             </main>
           </div>

@@ -22,7 +22,7 @@ class Transactions extends Component {
             let count = 0
             let tr = logs.map((e) => {
                 count++
-                console.log(e)
+                //console.log(e)
                 return (
                     [
                         <tr>
