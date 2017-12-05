@@ -7,18 +7,32 @@ class Admin extends Component {
         this.state = {
             user: "",
             toApprove: "",
+            toMint: "",
+            mintValue: 0,
             web3: null
         }
 
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmitMint = this.handleSubmitMint.bind(this);
+        this.handleChangeMint = this.handleChangeMint.bind(this);
+        this.handleChangeMintValue = this.handleChangeMintValue.bind(this);
     }
 
 
     handleSubmit(event) {
-        console.log('A name was submitted: ' + this.state.toApprove);
+        console.log('A name was submitted for approve: ' + this.state.toApprove);
         this.props.usiContract.approveAccount(this.state.toApprove, true, {from: this.props.user}).then(receipt =>{
+            console.log(receipt)
+        })
+
+        event.preventDefault();
+    }
+
+    handleSubmitMint(event) {
+        console.log('A name was submitted for mint: ' + this.state.toApprove);
+        this.props.usiContract.mintToken(this.state.toMint, this.state.mintValue, {from: this.props.user}).then(receipt =>{
             console.log(receipt)
         })
 
@@ -27,6 +41,13 @@ class Admin extends Component {
 
     handleChange(event) {
         this.setState({ toApprove: event.target.value });
+    }
+
+    handleChangeMint(event) {
+        this.setState({ toMint: event.target.value });
+    }
+    handleChangeMintValue(event) {
+        this.setState({ mintValue: event.target.value });
     }
 
     render() {
@@ -43,7 +64,17 @@ class Admin extends Component {
                     <input type="submit" value="Approve" className="pure-button"/>
                 </form>
                 <h2>Mint Coin:</h2>
-                "TODO"
+                <form onSubmit={this.handleSubmitMint} className="pure-form pure-form-stacked">
+                    <label>
+                        Mint coins to account:
+                        <input type="text" onChange={this.handleChangeMint} />
+                    </label>
+                    <label>
+                        How much:
+                        <input type="number" name="amount" onChange={this.handleChangeMintValue} />
+                    </label>
+                    <input type="submit" value="Send" className="pure-button"/>
+                </form>
             </div>
         )
     }

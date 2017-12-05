@@ -17,9 +17,13 @@ class Transactions extends Component {
 
     getTransactions() {
         let events = this.props.usiContract.allEvents({ fromBlock: 0, toBlock: 'latest' });
+        console.log("EVENTS")
+        console.log(events)
         events.get((error, logs) => {
-
+            console.log("LOGS")
+            console.log(logs)
             let count = 0
+
             let tr = logs.map((e) => {
                 count++
                 //console.log(e)

@@ -32,6 +32,7 @@ contract USIcoin is owned {
     /* A function that approve accounts when owner permit that */ 
     event Approved(address target, bool status);
     event Transfer(address indexed from, address indexed to, uint256 value);
+    event Mint(address indexed from, address indexed to, uint256 value);
 
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function USIcoin(uint256 initialSupply, string tokenName, string tokenSymbol, 
@@ -64,8 +65,8 @@ contract USIcoin is owned {
     function mintToken(address target, uint256 mintedAmount) public onlyOwner {
         balanceOf[target] += mintedAmount;
         totalSupply += mintedAmount;
-        Transfer(0, owner, mintedAmount);
-        Transfer(owner, target, mintedAmount);
+        Mint(0, owner, mintedAmount);
+        Mint(owner, target, mintedAmount);
     }
     
     function approveAccount(address target, bool status) public onlyOwner{
