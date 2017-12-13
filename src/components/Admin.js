@@ -23,7 +23,7 @@ class Admin extends Component {
 
     handleSubmit(event) {
         console.log('A name was submitted for approve: ' + this.state.toApprove);
-        this.props.usiContract.approveAccount(this.state.toApprove, true, {from: this.props.user}).then(receipt =>{
+        this.props.usiContract.authorizeAccount(this.state.toApprove, true, {from: this.props.user}).then(receipt =>{
             console.log(receipt)
         })
 

@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import Welcome from './components/Welcome'
 import Admin from './components/Admin'
+import Profile from './components/Profile'
+import Buy from './components/Buy'
 import Send from './components/Send'
 import Transactions from './components/Transactions'
-
+import { Web3Provider } from 'react-web3';
+import { HashLoader } from 'react-spinners';
 import getWeb3 from './utils/getWeb3'
 import UsiCoinContract from '../build/contracts/USIcoin.json'
 import {
@@ -16,14 +19,6 @@ import './css/oswald.css'
 import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
-
-
-//only for prototyping
-const Profile = () => (
-  <div>
-    <h2>TO DO Profile</h2>
-  </div>
-)
 
 class App extends Component {
   constructor(props) {
@@ -65,45 +60,53 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.admin, this.state.user)
     return (
       <div className="App">
-        <Router>
-          <div>
-            <div className="navbar pure-menu pure-menu-horizontal">
-              <ul className="pure-menu-list">
-                <li className="pure-menu-heading"><Link to="/" className="pure-menu-link">USICoin</Link></li>
-                <li className="pure-menu-item"><Link to="/send" className="pure-menu-link"> Send</Link></li>
-                <li className="pure-menu-item"><Link to="/profile" className="pure-menu-link">Profile</Link></li>
-                <li className="pure-menu-item"><Link to="/transaction" className="pure-menu-link"> Transactions</Link></li>
-                {(this.state.admin === this.state.user)?(
-                <li className="pure-menu-item"><Link to="/admin" className="pure-menu-link pure-button-primary">  Admin</Link></li>):""}
-              </ul>
-            </div>
-            <main className="container">
-              <div className="pure-g">
-                {(this.state.usiContract != null && this.state.user != null) ? (
-                  <div className="pure-u-1-1">
-                    <Route exact path="/" render={(routeProps) => (
-                      <Welcome {...routeProps} {...this.state} />
-                    )} />
-                    <Route path="/send" render={(routeProps) => (
-                      <Send {...routeProps} {...this.state} />
-                    )} />
-                    <Route path="/profile" render={(routeProps) => (
-                      <Profile {...routeProps} {...this.state} />
-                    )} />
-                    <Route path="/transaction" render={(routeProps) => (
-                      <Transactions {...routeProps} {...this.state} />)} />
-                    <Route path="/admin" render={(routeProps) => (
-                      <Admin {...routeProps} {...this.state} />
-                    )} />
-                  </div>
-                ) : "Loading..."}
+        <Web3Provider onChangeAccount={() => this.componentWillMount()}>
+          <Router>
+            <div>
+              <div className="navbar pure-menu pure-menu-horizontal">
+                <ul className="pure-menu-list">
+                  <li className="pure-menu-heading"><Link to="/" className="pure-menu-link">USICoin</Link></li>
+                  <li className="pure-menu-item"><Link to="/send" className="pure-menu-link">Send</Link></li>
+                  <li className="pure-menu-item"><Link to="/buy" className="pure-menu-link">Buy</Link></li>
+                  <li className="pure-menu-item"><Link to="/profile" className="pure-menu-link">Profile</Link></li>
+                  <li className="pure-menu-item"><Link to="/transaction" className="pure-menu-link">Transactions</Link></li>
+                  {(this.state.admin === this.state.user) ? (
+                    <li className="pure-menu-item"><Link to="/admin" className="pure-menu-link pure-button-primary">  Admin</Link></li>
+                  ) : ""}
+                </ul>
               </div>
-            </main>
-          </div>
-        </Router>
+              <main className="container">
+                <div className="pure-g">
+                  <div className="pure-u-1-1">
+                    {(this.state.usiContract != null && this.state.user != null) ? (
+                      <div>
+                        <Route exact path="/" render={(routeProps) => (
+                          <Welcome {...routeProps} {...this.state} />
+                        )} />
+                        <Route path="/send" render={(routeProps) => (
+                          <Send {...routeProps} {...this.state} />
+                        )} />
+                        <Route path="/buy" render={(routeProps) => (
+                          <Buy {...routeProps} {...this.state} />
+                        )} />
+                        <Route path="/profile" render={(routeProps) => (
+                          <Profile {...routeProps} {...this.state} />
+                        )} />
+                        <Route path="/transaction" render={(routeProps) => (
+                          <Transactions {...routeProps} {...this.state} />)} />
+                        <Route path="/admin" render={(routeProps) => (
+                          <Admin {...routeProps} {...this.state} />
+                        )} />
+                      </div>
+                    ) : <div> Your Wallet is Loading...<HashLoader /> </div>}
+                  </div>
+                </div>
+              </main>
+            </div>
+          </Router>
+        </Web3Provider>
       </div>
     );
   }
