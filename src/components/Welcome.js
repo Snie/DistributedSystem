@@ -19,7 +19,7 @@ class Welcome extends Component {
                 // Update state with the result.
                 return this.setState({ balance: result.c[0] })
             }).then((result) => {
-                return this.props.usiContract.authorizeAccount.call(this.props.user).then((result) => {
+                return this.props.usiContract.authorizationStatus.call(this.props.user).then((result) => {
                     return this.setState({ approved: result })
                 })
             })

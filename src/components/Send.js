@@ -9,7 +9,6 @@ class Send extends Component {
             web3: null
         }
 
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -39,15 +38,15 @@ class Send extends Component {
                 <h1>Here you can send your USICoins
                     </h1>
 
-                <h2>Send money to:</h2>
+                <h2>Send money to</h2>
                 <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
                     <label>
-                        Account:
-                        <input type="text" name="to" onChange={this.handleChange} />
+                        Account
+                        <input type="text" name="to" required="required" onChange={this.handleChange} />
                     </label>
                     <label>
-                        How much:
-                        <input type="number" name="amount" onChange={this.handleChange} />
+                        How much
+                        <input type="number" name="amount" min="1" step="any" required="required" onChange={this.handleChange} />
                     </label>
                     <div>
                         <input type="submit" value="Send" className="pure-button"/>

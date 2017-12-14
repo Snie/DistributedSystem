@@ -55,7 +55,7 @@ class Admin extends Component {
             <div>
                 <h1>You are now in the management area of USICoin!</h1>
                 <p>Only the owner of USICoin can access this section</p>
-                <h2>Authorize account:</h2>
+                <h2>Authorize account</h2>
                 <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
                     <label>
                         Account:
@@ -63,14 +63,14 @@ class Admin extends Component {
                     </label>
                     <input type="submit" value="Approve" className="pure-button"/>
                 </form>
-                <h2>Mint Coin:</h2>
+                <h2>Mint Coin</h2>
                 <form onSubmit={this.handleSubmitMint} className="pure-form pure-form-stacked">
                     <label>
-                        Mint coins to account:
+                        Mint coins to account
                         <input type="text" onChange={this.handleChangeMint} />
                     </label>
                     <label>
-                        How much:
+                        How much
                         <input type="number" name="amount" onChange={this.handleChangeMintValue} />
                     </label>
                     <input type="submit" value="Send" className="pure-button"/>

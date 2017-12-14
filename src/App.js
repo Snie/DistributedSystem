@@ -62,7 +62,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Web3Provider onChangeAccount={() => this.componentWillMount()}>
+        <Web3Provider onChangeAccount={() => document.location.reload()}>
           <Router>
             <div>
               <div className="navbar pure-menu pure-menu-horizontal">

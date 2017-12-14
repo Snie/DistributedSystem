@@ -7,6 +7,8 @@ class Buy extends Component {
         this.state = {
             user: "",
         }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -20,10 +22,30 @@ class Buy extends Component {
             return this.setState({ balance: result.c[0] })
         })
 
-        /*this.props.usiContract.price().then((result) => {
-             this.setState({ tokenPrice: result })
-        })*/
-        //TODO: Form to buy USICoin
+        this.props.usiContract.getPrice.call().then((result) => {
+            //let price = this.props.web3.fromWei(result.c[0], "ether") 
+            let price = result.c[0]
+            this.setState({ tokenPrice: price })
+        })
+        
+    }
+
+    handleSubmit(event) {
+        this.props.usiContract.buy({ from: this.props.user, value: this.props.web3.toWei(this.state.amount, "ether") }).then(receipt => {
+            alert("Transaction successful!")
+        })
+
+        event.preventDefault();
+    }
+
+    handleChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
     }
 
     render() {
@@ -34,6 +56,16 @@ class Buy extends Component {
                 <p>{this.state.balance} UC</p>
                 <h2>USICoin price is </h2>
                 <p>{this.state.tokenPrice} ETH</p>
+                <h2>How many USICoins do you want to buy?</h2>
+                <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
+                    <label>
+                        Amount in ETH
+                        <input type="number" min="1" step="any" required="required" name="amount" onChange={this.handleChange} />
+                    </label>
+                    <div>
+                        <input type="submit" value="Buy" className="pure-button" />
+                    </div>
+                </form>
             </div>
         )
     }

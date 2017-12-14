@@ -28,45 +28,52 @@ contract USIcoin is owned {
 
     /* This creates an array with all balances */
     mapping (address => uint256) public balanceOf;
-    mapping (address => bool) public authorizeAccount;
+    mapping (address => bool) public authorizationStatus;
+    //mapping (bytes32 => address) public email;
 
     /* A function that approve accounts when owner permit that */ 
     event Authorized(address target, bool status);
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Mint(address indexed from, address indexed to, uint256 value);
+    event NewPrice(uint256 tokenPrice);
+    //event EmailSet(address target);
 
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function USIcoin(uint256 initialSupply, string tokenName, string tokenSymbol, 
                      uint8 decimalUnits, uint8 tokenPrice, address centralMinter) public {
         if (centralMinter != 0) owner = centralMinter;
-
-        authorizeAccount[centralMinter] = true;
-        Authorized(centralMinter, true);
+        
+        authorizeAccount(centralMinter, true);
         totalSupply = initialSupply;
         balanceOf[msg.sender] = initialSupply;              // Give the creator all initial tokens
         name = tokenName;                                   // Set the name 
         symbol = tokenSymbol;                               // Set the symbol
-        decimals = decimalUnits;                            // Amount of decimals 
-        price = tokenPrice;    
+        decimals = decimalUnits; 
+        setPrice(tokenPrice);    
     }
     
-    function setPrices(uint256 tokenPrice)  public onlyOwner {
-            
+    function setPrice(uint256 tokenPrice) public onlyOwner {
         price = tokenPrice * 1000000000000000000; //tokenprice was in wei now in eth
+        NewPrice(price);
     }
 
-    function buy(uint amount) public payable {
+    function getPrice() public constant returns (uint256) {
+        return price / 1000000000000000000;
+    }
+
+    function buy() public payable returns (uint amount) {
         amount = msg.value / price;                    
-        require(balanceOf[this] >= amount);               
+        require(balanceOf[owner] >= amount);               
         balanceOf[msg.sender] += amount;                  
-        balanceOf[this] -= amount;                        
-        Transfer(this, msg.sender, amount);              
+        balanceOf[owner] -= amount;                        
+        Transfer(this, msg.sender, amount);   
+        return amount;           
     }
 
 
     function transfer(address _to, uint256 _value) public {
         /* Check if sender is Authorized */
-        require(authorizeAccount[msg.sender]);
+        require(authorizationStatus[msg.sender]);
         /* Check if sender has balance and for overflows */
         require(balanceOf[msg.sender] >= _value);
         require(balanceOf[_to] + _value >= balanceOf[_to]);
@@ -85,8 +92,14 @@ contract USIcoin is owned {
         Mint(owner, target, mintedAmount);
     }
     
-    function approveAccount(address target, bool status) public onlyOwner{
-        authorizeAccount[target] = status;
+    function authorizeAccount(address target, bool status) public onlyOwner{
+        authorizationStatus[target] = status;
         Authorized(target, status);
     }
+/*
+    function setEmail(bytes32 newEmail, address target) public {
+        email[newEmail] = target;
+        EmailSet(target);
+    }
+*/
 }
