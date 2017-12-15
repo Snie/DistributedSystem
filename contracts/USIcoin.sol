@@ -53,12 +53,8 @@ contract USIcoin is owned {
     }
     
     function setPrice(uint256 tokenPrice) public onlyOwner {
-        price = tokenPrice * 1000000000000000000; //tokenprice was in wei now in eth
+        price = tokenPrice; //tokenprice in wei 1000000000000000000 in eth
         NewPrice(price);
-    }
-
-    function getPrice() public constant returns (uint256) {
-        return price / 1000000000000000000;
     }
 
     function buy() public payable returns (uint amount) {

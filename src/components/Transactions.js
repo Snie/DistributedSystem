@@ -16,7 +16,7 @@ class Transactions extends Component {
 
 
     getTransactions() {
-        let events = this.props.usiContract.allEvents({fromBlock: 0, toBlock: 'latest' });
+        let events = this.props.usiContract.allEvents({ fromBlock: 0, toBlock: 'latest' });
         //console.log("EVENTS")
         //console.log(events)
         events.get((error, logs) => {
@@ -27,17 +27,19 @@ class Transactions extends Component {
             let tr = logs.map((e) => {
                 count++
                 //console.log(e)
-                return (
-                    [
-                        <tr>
-                        <td>{count}</td>
-                        <td>{e.event}</td>
-                        <td>{e.args.from?e.args.from:"-"}</td>
-                        <td>{e.args.to?e.args.to:"-"}</td>
-                        <td>{(e.args.value)?e.args.value.c:"-"}</td>
-                        </tr>
-                    ]
-                )
+                if (e.args.from === this.props.user || e.args.to === this.props.user) {
+                    return (
+                        [
+                            <tr>
+                                <td>{count}</td>
+                                <td>{e.event}</td>
+                                <td>{e.args.from ? e.args.from : "-"}</td>
+                                <td>{e.args.to ? e.args.to : "-"}</td>
+                                <td>{(e.args.value) ? e.args.value.c : "-"}</td>
+                            </tr>
+                        ]
+                    )
+                } else return []
 
             })
             this.setState({ transactions: tr })

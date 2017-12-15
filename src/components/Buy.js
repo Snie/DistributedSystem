@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+var BigNumber = require('bignumber.js');
 
 class Buy extends Component {
     constructor(props) {
@@ -22,16 +23,19 @@ class Buy extends Component {
             return this.setState({ balance: result.c[0] })
         })
 
-        this.props.usiContract.getPrice.call().then((result) => {
-            //let price = this.props.web3.fromWei(result.c[0], "ether") 
-            let price = result.c[0]
+        this.props.usiContract.price.call().then((result) => {
+            console.log(result)
+            let price = this.props.web3.fromWei(result.c[0], "ether") 
+            console.log(price)
             this.setState({ tokenPrice: price })
         })
         
     }
 
     handleSubmit(event) {
-        this.props.usiContract.buy({ from: this.props.user, value: this.props.web3.toWei(this.state.amount, "ether") }).then(receipt => {
+        let amount_eth = new BigNumber(this.state.amount * this.state.tokenPrice)
+        console.log('ttt',amount_eth, this.state.tokenPrice)
+        this.props.usiContract.buy({ from: this.props.user, value: amount_eth}).then(receipt => {
             alert("Transaction successful!")
         })
 
@@ -59,7 +63,7 @@ class Buy extends Component {
                 <h2>How many USICoins do you want to buy?</h2>
                 <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
                     <label>
-                        Amount in ETH
+                        Amount of USICoin
                         <input type="number" min="1" step="any" required="required" name="amount" onChange={this.handleChange} />
                     </label>
                     <div>
