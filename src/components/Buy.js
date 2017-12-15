@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-var BigNumber = require('bignumber.js');
 
 class Buy extends Component {
     constructor(props) {
@@ -24,17 +23,16 @@ class Buy extends Component {
         })
 
         this.props.usiContract.price.call().then((result) => {
-            console.log(result)
-            let price = this.props.web3.fromWei(result.c[0], "ether") 
-            console.log(price)
+            //set price in wei and convert it in the view
+            let price = result.c[0]
+            console.log("wei price",price)
             this.setState({ tokenPrice: price })
         })
         
     }
 
     handleSubmit(event) {
-        let amount_eth = new BigNumber(this.state.amount * this.state.tokenPrice)
-        console.log('ttt',amount_eth, this.state.tokenPrice)
+        let amount_eth = this.state.amount * this.state.tokenPrice
         this.props.usiContract.buy({ from: this.props.user, value: amount_eth}).then(receipt => {
             alert("Transaction successful!")
         })
@@ -59,7 +57,7 @@ class Buy extends Component {
                 <h2>Your balance is </h2>
                 <p>{this.state.balance} UC</p>
                 <h2>USICoin price is </h2>
-                <p>{this.state.tokenPrice} ETH</p>
+                <p>{this.props.web3.fromWei(this.state.tokenPrice, "ether")} ETH</p>
                 <h2>How many USICoins do you want to buy?</h2>
                 <form onSubmit={this.handleSubmit} className="pure-form pure-form-stacked">
                     <label>

@@ -40,7 +40,7 @@ contract USIcoin is owned {
 
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function USIcoin(uint256 initialSupply, string tokenName, string tokenSymbol, 
-                     uint8 decimalUnits, uint8 tokenPrice, address centralMinter) public {
+                     uint8 decimalUnits, uint256 tokenPrice, address centralMinter) public {
         if (centralMinter != 0) owner = centralMinter;
         
         authorizeAccount(centralMinter, true);
@@ -53,12 +53,12 @@ contract USIcoin is owned {
     }
     
     function setPrice(uint256 tokenPrice) public onlyOwner {
-        price = tokenPrice; //tokenprice in wei 1000000000000000000 in eth
-        NewPrice(price);
+        price = tokenPrice; //price in wei
+        NewPrice(tokenPrice);
     }
 
     function buy() public payable returns (uint amount) {
-        amount = msg.value / price;                    
+        amount = msg.value / price; //wei                  
         require(balanceOf[owner] >= amount);               
         balanceOf[msg.sender] += amount;                  
         balanceOf[owner] -= amount;                        
