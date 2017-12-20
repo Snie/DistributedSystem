@@ -69,8 +69,10 @@ class App extends Component {
                 <ul className="pure-menu-list">
                   <li className="pure-menu-heading"><Link to="/" className="pure-menu-link">USICoin</Link></li>
                   <li className="pure-menu-item"><Link to="/send" className="pure-menu-link">Send</Link></li>
-                  <li className="pure-menu-item"><Link to="/buy" className="pure-menu-link">Buy</Link></li>
-                  <li className="pure-menu-item"><Link to="/profile" className="pure-menu-link">Profile</Link></li>
+                  {(this.state.admin !== this.state.user) ? (
+                    <li className="pure-menu-item"><Link to="/buy" className="pure-menu-link">Buy</Link></li>
+                  ) : ""}
+                  <li hidden className="pure-menu-item"><Link to="/profile" className="pure-menu-link">Profile</Link></li>
                   <li className="pure-menu-item"><Link to="/transaction" className="pure-menu-link">Transactions</Link></li>
                   {(this.state.admin === this.state.user) ? (
                     <li className="pure-menu-item"><Link to="/admin" className="pure-menu-link pure-button-primary">  Admin</Link></li>
